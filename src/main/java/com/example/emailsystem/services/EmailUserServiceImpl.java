@@ -61,7 +61,7 @@ public class EmailUserServiceImpl implements EmailUserService{
             if (Objects.equals(user.get().getPassword(), userDto.getPassword()));
             mapper.map(user.get(),UserResponse.class);
         }
-        return null;
+        throw new EmailSystemException("User does not exist");
     }
 
     @Override

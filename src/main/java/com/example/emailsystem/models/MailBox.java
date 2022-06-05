@@ -14,16 +14,18 @@ import java.util.List;
 @AllArgsConstructor
 public class MailBox {
     @Id
-    private String username;
+    private String name;
+    private String userName;
     private List<Message> messages;
     private Type boxType;
 
     public MailBox(String username) {
-        this.username = username;
+        this.name = username;
     }
 
-    public <E> MailBox(Type mailType, ArrayList<Message> messages) {
+    public MailBox(Type mailType, ArrayList<Message> messages, String userName) {
         boxType = mailType;
         this.messages = messages;
+        this.userName = userName;
     }
 }

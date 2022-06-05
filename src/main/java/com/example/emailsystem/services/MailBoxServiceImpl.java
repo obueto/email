@@ -31,14 +31,19 @@ public class MailBoxServiceImpl implements MailBoxService {
 
 
     @Override
-    public void sendMessage( Message message) {
-        EmailUser receiver = emailUserRepository.findEmailUserByUsername(message.getReceiver()).orElseThrow(()-> new  EmailSystemException("user does not exist"));
-        MailBox receiverMailBox = mailBoxRepository.findMailBoxByUsername(receiver.getUsername());
-        receiverMailBox.getMessages().add(message);
-       // Message message1 = messageRepository.save(message);
-        receiverMailBox.setBoxType(Type.INBOX);
-        mailBoxRepository.save(receiverMailBox);
+    public void sendMessage( MessageDto message, String username) {
+//        EmailUser receiver = emailUserRepository.findEmailUserByUserName(username).orElseThrow(()-> new  EmailSystemException("user does not exist"));
+       MailBox receiverMailBox = mailBoxRepository.findMailBoxByUserNameAndBoxType(message.getReceiver(), Type.INBOX);
+        if (emailUserRepository.findEmailUserByUsername(message.getReceiver()).isPresent()){
+            Message savedMessage = messageService.sendMessage(message,username);
+          //  Notification notification = new Notification();
+            receiverMailBox.getMessages().add(savedMessage);
+            mailBoxRepository.save(receiverMailBox);
+        }
+        else
+            throw new EmailSystemException("User does not exist");
 
+//message.getReceiver()
     }
 
     @Override
@@ -52,7 +57,7 @@ public class MailBoxServiceImpl implements MailBoxService {
 
     @Override
     public void deleteMailBox(MailBox mailBox) {
-        mailBox = mailBoxRepository.findMailBoxByUsername(mailBox.getUsername());
+        mailBox = mailBoxRepository.findMailBoxByUserName(mailBox.getName());
         mailBoxRepository.delete(mailBox);
 
     }
@@ -68,4 +73,5 @@ public class MailBoxServiceImpl implements MailBoxService {
     public void sendMessage(String receiver, String body, String sender) {
 
     }
+
 }

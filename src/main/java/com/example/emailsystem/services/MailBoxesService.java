@@ -13,6 +13,7 @@ public interface MailBoxesService {
     MailBox retrieveInbox(String username);
     MailBox retrieveSentBox(String username);
     MailBoxes findMailBoxes(String username);
+    void sendMessage(Message message);
     void deleteMailBoxes(MailBoxes mailBoxes);
     Message retrieveMessagesFromInbox(String username);
 }

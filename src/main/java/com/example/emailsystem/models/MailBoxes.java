@@ -20,12 +20,11 @@ public class MailBoxes {
 
     public MailBoxes(String username) {
         this.username = username;
-        if (boxes == null){
-            boxes = new ArrayList<>();
+        if (this.boxes == null){
+            this.boxes = new ArrayList<>();
         }
-        this.boxes = boxes;
-        boxes.add(new MailBox(Type.INBOX,new ArrayList<>()));
-        boxes.add(new MailBox(Type.SENT,new ArrayList<>()));
+        boxes.add(new MailBox(Type.INBOX,new ArrayList<>(), username));
+        boxes.add(new MailBox(Type.SENT,new ArrayList<>(), username));
     }
 }
 

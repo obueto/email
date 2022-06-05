@@ -4,6 +4,7 @@ import com.example.emailsystem.exceptions.EmailSystemException;
 import com.example.emailsystem.models.MailBox;
 import com.example.emailsystem.models.MailBoxes;
 import com.example.emailsystem.models.Message;
+import com.example.emailsystem.models.Type;
 import com.example.emailsystem.repositories.MailBoxRepository;
 import com.example.emailsystem.repositories.MailBoxesRepository;
 import com.example.emailsystem.repositories.MessageRepository;
@@ -11,12 +12,15 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 @NoArgsConstructor
 
 public class MailBoxesServiceImpl implements MailBoxesService{
     MailBoxesRepository mailBoxesRepository;
-    MailBoxRepository mailBoxRepository;
+    @Autowired
+    private MailBoxRepository mailBoxRepository;
     MessageRepository messageRepository;
 
     @Autowired
@@ -27,8 +31,10 @@ public class MailBoxesServiceImpl implements MailBoxesService{
     };
     @Override
     public MailBoxes createBoxes(String username) {
-        MailBoxes mailBoxes = new MailBoxes(username);
-
+         MailBoxes mailBoxes = new MailBoxes(username);
+         mailBoxRepository.saveAll(mailBoxes.getBoxes());
+//        mailBoxes.getBoxes().add(new MailBox(Type.INBOX, new ArrayList<>(), username));
+//        mailBoxes.getBoxes().add(new MailBox(Type.SENT, new ArrayList<>(), username));
         return mailBoxesRepository.save(mailBoxes);
     }
 
@@ -47,6 +53,11 @@ public class MailBoxesServiceImpl implements MailBoxesService{
     public MailBoxes findMailBoxes(String username) {
 
         return mailBoxesRepository.findById(username).orElse(null);
+    }
+
+    @Override
+    public void sendMessage(Message message) {
+
     }
 
     @Override

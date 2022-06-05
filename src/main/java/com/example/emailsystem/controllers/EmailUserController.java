@@ -26,15 +26,21 @@ public class EmailUserController {
         this.mailBoxesService = mailBoxesService;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/create")
     public ResponseEntity<?> createUser(@RequestBody UserDto userResponse){
         emailUserService.registerUser(userResponse.getUsername(),userResponse.getPassword());
         return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
 @PatchMapping ("/sendMessage")
-    public ResponseEntity<?> sendMessages(@RequestBody MessageResponseDto messageResponseDto){
-        mailBoxService.sendMessage(messageResponseDto.getReceiver(),messageResponseDto.getBody(),messageResponseDto.getSender());
+    public ResponseEntity<?> sendMessages(@RequestBody MessageDto messageResponseDto,String username){
+        mailBoxService.sendMessage(messageResponseDto,username);
         return new ResponseEntity<>(messageResponseDto,HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody UserDto loginUser){
+        emailUserService.loginUser(loginUser);
+        return new ResponseEntity<>(loginUser,HttpStatus.OK);
     }
 
 

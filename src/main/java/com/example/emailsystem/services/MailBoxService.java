@@ -8,10 +8,11 @@ import com.example.emailsystem.models.MailBoxes;
 import com.example.emailsystem.models.Message;
 
 public interface MailBoxService {
-    void sendMessage(Message message);
+    void sendMessage(MessageDto message, String username);
     void createMailBox(MailBoxes mailBoxes);
     void deleteMailBox(MailBox mailBox);
     void saveMessage(Message message);
 
     void sendMessage(String receiver, String body, String sender);
+
 }
