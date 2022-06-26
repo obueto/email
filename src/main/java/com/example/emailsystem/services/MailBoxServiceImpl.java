@@ -17,28 +17,33 @@ import java.util.Optional;
 @Service
 public class MailBoxServiceImpl implements MailBoxService {
 
-@Autowired
+    @Autowired
     private MailBoxRepository mailBoxRepository;
-@Autowired
+    @Autowired
     private EmailUserRepository emailUserRepository;
 
     private MessageRepository messageRepository;
-
     private MessageService messageService;
 
 @Autowired
-    public MailBoxServiceImpl(MessageService messageService){this.messageService = messageService;}
+public MailBoxServiceImpl(MessageService messageService, EmailUserRepository emailUserRepository, MessageRepository messageRepository
+ ){this.messageService = messageService;
+this.emailUserRepository = emailUserRepository;
+this.messageRepository  = messageRepository;}
 
 
     @Override
     public void sendMessage( MessageDto message, String username) {
 //        EmailUser receiver = emailUserRepository.findEmailUserByUserName(username).orElseThrow(()-> new  EmailSystemException("user does not exist"));
        MailBox receiverMailBox = mailBoxRepository.findMailBoxByUserNameAndBoxType(message.getReceiver(), Type.INBOX);
+       MailBox senderMailBox = mailBoxRepository.findMailBoxByUserNameAndBoxType(message.getSender(),Type.SENT);
         if (emailUserRepository.findEmailUserByUsername(message.getReceiver()).isPresent()){
-            Message savedMessage = messageService.sendMessage(message,username);
+            Message savedMessage = messageService.inboxMessage(message,username);
           //  Notification notification = new Notification();
             receiverMailBox.getMessages().add(savedMessage);
-            mailBoxRepository.save(receiverMailBox);
+            senderMailBox.getMessages().add(savedMessage);
+           mailBoxRepository.save(receiverMailBox);
+           mailBoxRepository.save(senderMailBox);
         }
         else
             throw new EmailSystemException("User does not exist");
@@ -62,12 +67,7 @@ public class MailBoxServiceImpl implements MailBoxService {
 
     }
 
-    @Override
-    public void saveMessage(Message message) {
 
-
-
-    }
 
     @Override
     public void sendMessage(String receiver, String body, String sender) {

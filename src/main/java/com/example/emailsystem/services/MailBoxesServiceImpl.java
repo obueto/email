@@ -1,5 +1,6 @@
 package com.example.emailsystem.services;
 
+import com.example.emailsystem.dtos.MessageDto;
 import com.example.emailsystem.exceptions.EmailSystemException;
 import com.example.emailsystem.models.MailBox;
 import com.example.emailsystem.models.MailBoxes;
@@ -15,13 +16,16 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 @Service
-@NoArgsConstructor
 
 public class MailBoxesServiceImpl implements MailBoxesService{
+    @Autowired
     MailBoxesRepository mailBoxesRepository;
     @Autowired
     private MailBoxRepository mailBoxRepository;
+    @Autowired
     MessageRepository messageRepository;
+    @Autowired
+    MailBoxService mailBoxService;
 
     @Autowired
     public  MailBoxesServiceImpl( MailBoxesRepository mailBoxesRepository,MailBoxRepository mailBoxRepository,MessageRepository messageRepository){
@@ -46,6 +50,7 @@ public class MailBoxesServiceImpl implements MailBoxesService{
 
     @Override
     public MailBox retrieveSentBox(String username) {
+
         return mailBoxRepository.findById(username).orElse(null);
     }
 
@@ -56,8 +61,8 @@ public class MailBoxesServiceImpl implements MailBoxesService{
     }
 
     @Override
-    public void sendMessage(Message message) {
-
+    public void sendMessage(MessageDto message, String username) {
+        mailBoxService.sendMessage(message,username);
     }
 
     @Override

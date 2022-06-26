@@ -1,5 +1,6 @@
 package com.example.emailsystem.services;
 
+import com.example.emailsystem.dtos.MessageDto;
 import com.example.emailsystem.models.MailBox;
 import com.example.emailsystem.models.MailBoxes;
 import com.example.emailsystem.models.Message;
@@ -13,7 +14,7 @@ public interface MailBoxesService {
     MailBox retrieveInbox(String username);
     MailBox retrieveSentBox(String username);
     MailBoxes findMailBoxes(String username);
-    void sendMessage(Message message);
+    void sendMessage(MessageDto message, String username);
     void deleteMailBoxes(MailBoxes mailBoxes);
     Message retrieveMessagesFromInbox(String username);
 }

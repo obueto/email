@@ -9,6 +9,7 @@ import com.example.emailsystem.models.Message;
 import com.example.emailsystem.services.EmailUserService;
 import com.example.emailsystem.services.MailBoxService;
 import com.example.emailsystem.services.MailBoxesService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +17,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/user")
 public class EmailUserController {
-    private EmailUserService emailUserService;
-    private MailBoxService mailBoxService;
+    @Autowired
+    private  EmailUserService emailUserService;
+    @Autowired
+    private  MailBoxService mailBoxService;
+    @Autowired
     private MailBoxesService mailBoxesService;
 
-    public EmailUserController(EmailUserService emailUserService,MailBoxService mailBoxService,MailBoxesService mailBoxesService){
-        this.emailUserService = emailUserService;
-        this.mailBoxService = mailBoxService;
-        this.mailBoxesService = mailBoxesService;
-    }
+
+
 
     @PostMapping("/create")
     public ResponseEntity<?> createUser(@RequestBody UserDto userResponse){

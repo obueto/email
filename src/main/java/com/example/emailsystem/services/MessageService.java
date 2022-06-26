@@ -7,5 +7,6 @@ import com.example.emailsystem.models.Message;
 public interface MessageService {
     void createMessage(MailBox mailBox);
 
-    Message sendMessage(MessageDto messageDto, String username);
+    Message inboxMessage(MessageDto messageDto, String username);
+    Message retrieveMessage(MessageDto messageDto, String username);
 }

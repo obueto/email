@@ -14,7 +14,7 @@
     <name>emailSystem</name>
     <description>emailSystem</description>
     <properties>
-        <java.version>16</java.version>
+        <java.version>11</java.version>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16  </maven.compiler.target>
     </properties>

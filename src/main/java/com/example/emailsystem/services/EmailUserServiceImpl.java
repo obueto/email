@@ -20,10 +20,11 @@ import java.util.Optional;
 
 @Service
 public class EmailUserServiceImpl implements EmailUserService{
-
     private MailBoxesService mailBoxesService;
     private EmailUserRepository emailUserRepository;
+
     private ModelMapper mapper;
+// test user for crud,test that user can send message
 
 
     @Autowired
@@ -57,6 +58,7 @@ public class EmailUserServiceImpl implements EmailUserService{
     @Override
     public UserResponse loginUser(UserDto userDto) {
         Optional<EmailUser>user = emailUserRepository.findEmailUserByUsername(userDto.getUsername());
+
         if (user.isPresent()){
             if (Objects.equals(user.get().getPassword(), userDto.getPassword()));
             mapper.map(user.get(),UserResponse.class);
@@ -83,5 +85,23 @@ public class EmailUserServiceImpl implements EmailUserService{
     public EmailUser retrieveUserByUsername(String username) {
 
         return emailUserRepository.findEmailUserByUsername(username).orElseThrow(()-> new EmailSystemException("user not found"));
+    }
+
+    @Override
+    public void deleteUser(UserDto userDto) {
+        Optional<EmailUser> user = emailUserRepository.findEmailUserByUsername(userDto.getUsername());
+        user.ifPresent(emailUser -> emailUserRepository.delete(emailUser));
+    }
+
+    @Override
+    public UserResponse loginUser(String username, String password) {
+        Optional<EmailUser> user = emailUserRepository.findEmailUserByUsername(username);
+                UserResponse response = new UserResponse();
+        if (user.isPresent()){
+            if(user.get().getPassword().equals(password)){
+                response.setUsername(user.get().getUsername());
+            }
+        }
+    return response;
     }
 }

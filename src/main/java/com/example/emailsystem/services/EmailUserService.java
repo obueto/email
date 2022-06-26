@@ -13,4 +13,7 @@ public interface EmailUserService {
     MailBoxes retrieveUserMailBoxes(String username);
     EmailUser retrieveUserByUsername(String username);
 
+    void deleteUser(UserDto userDto);
+
+    UserResponse loginUser(String username, String password);
 }
